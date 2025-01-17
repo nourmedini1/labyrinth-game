@@ -22,34 +22,27 @@ import java.util.List;
 @ApplicationScoped
 @Transactional
 @Slf4j
+@Bulkhead
+@CircuitBreaker
+@Timeout
 public class ChallengeRepository implements PanacheMongoRepositoryBase<Challenge, ObjectId> {
-    @Bulkhead
-    @CircuitBreaker
-    @Timeout
+
     public Challenge findChallengeById(ObjectId id) {
         return findById(id);
     }
-    @Bulkhead
-    @CircuitBreaker
-    @Timeout
+
     public void createChallenge(Challenge challenge) {
         persist(challenge);
     }
-    @Bulkhead
-    @CircuitBreaker
-    @Timeout
+
     public void updateChallenge(Challenge challenge) {
         update(challenge);
     }
-    @Bulkhead
-    @CircuitBreaker
-    @Timeout
+
     public void deleteChallenge(ObjectId id) {
         deleteById(id);
     }
-    @Bulkhead
-    @CircuitBreaker
-    @Timeout
+
     public PagedEntity<Challenge> searchChallenges(int page, int size, String challengerId, String challengedId, ChallengeStatus status, int difficultyLevel, String winnerId) {
         List<Bson> filters = new ArrayList<>();
 
