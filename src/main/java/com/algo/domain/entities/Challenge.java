@@ -1,6 +1,7 @@
 package com.algo.domain.entities;
 
 import com.algo.domain.common.ChallengeStatus;
+import com.algo.domain.common.Theme;
 import com.algo.domain.common.annotations.ValidObjectId;
 import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
 import io.quarkus.mongodb.panache.common.MongoEntity;
@@ -49,5 +50,8 @@ public class Challenge extends PanacheMongoEntityBase implements Serializable {
     @ValidObjectId
     @Schema(nullable = true)
     private String winnerId;
+
+    @BsonProperty("theme")
+    private Theme theme;
 
 }
