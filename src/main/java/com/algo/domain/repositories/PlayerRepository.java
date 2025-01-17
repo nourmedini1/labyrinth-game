@@ -1,5 +1,6 @@
 package com.algo.domain.repositories;
 
+import com.algo.domain.common.utils.PagedEntity;
 import com.algo.domain.entities.Player;
 import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -9,6 +10,8 @@ import org.bson.types.ObjectId;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Timeout;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 
 import java.util.Optional;
 
@@ -39,4 +42,13 @@ public class PlayerRepository implements PanacheMongoRepositoryBase<Player, Obje
         public void deletePlayer(ObjectId id) {
             deleteById(id);
         }
+
+        public PagedEntity<Player> search(int page, int size) {
+            return new PagedEntity<Player>().of(findAll(Sort.by("score").descending())
+                    .page(Page.of(page, size))) ;
+
+
+
+
+    }
 }

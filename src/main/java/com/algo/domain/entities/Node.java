@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class Node extends PanacheMongoEntityBase implements Serializable {
     private char value;
 
     @BsonProperty("neighbors")
-    private Coordinates[] neighbors;
+    private List<Coordinates> neighbors;
 
 
 

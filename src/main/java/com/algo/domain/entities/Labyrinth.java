@@ -10,6 +10,8 @@ import org.bson.types.ObjectId;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class Labyrinth extends PanacheMongoEntityBase implements Serializable {
     private ObjectId id;
 
     @BsonProperty("nodes")
-    private Node[][] nodes;
+    private List<List<Node>> nodes;
 
     @BsonProperty("start")
     private Coordinates start;
