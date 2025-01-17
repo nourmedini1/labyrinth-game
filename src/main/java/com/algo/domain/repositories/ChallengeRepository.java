@@ -1,6 +1,7 @@
 package com.algo.domain.repositories;
 
 import com.algo.domain.common.ChallengeStatus;
+import com.algo.domain.common.Theme;
 import com.algo.domain.common.utils.PagedEntity;
 import com.algo.domain.entities.Challenge;
 import com.mongodb.client.model.Filters;
@@ -43,7 +44,7 @@ public class ChallengeRepository implements PanacheMongoRepositoryBase<Challenge
         deleteById(id);
     }
 
-    public PagedEntity<Challenge> searchChallenges(int page, int size, String challengerId, String challengedId, ChallengeStatus status, int difficultyLevel, String winnerId) {
+    public PagedEntity<Challenge> searchChallenges(int page, int size, String challengerId, String challengedId, String status, int difficultyLevel, String winnerId, String theme) {
         List<Bson> filters = new ArrayList<>();
 
         if (challengerId != null && !challengerId.isBlank()) {
@@ -52,7 +53,7 @@ public class ChallengeRepository implements PanacheMongoRepositoryBase<Challenge
         if (challengedId != null && !challengedId.isBlank()) {
             filters.add(Filters.eq("challenged_id", challengedId));
         }
-        if (status != null) {
+        if (status != null && !status.isBlank()) {
             filters.add(Filters.eq("status", status));
         }
         if (difficultyLevel > 0) {
@@ -60,6 +61,10 @@ public class ChallengeRepository implements PanacheMongoRepositoryBase<Challenge
         }
         if (winnerId != null && !winnerId.isBlank()) {
             filters.add(Filters.eq("winner_id", winnerId));
+        }
+
+        if (theme != null && !theme.isBlank()) {
+            filters.add(Filters.eq("theme", Theme.valueOf(theme)));
         }
 
         Bson query = filters.isEmpty() ? new Document() : Filters.and(filters);
