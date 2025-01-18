@@ -5,6 +5,7 @@ import com.algo.domain.entities.Labyrinth;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -23,4 +24,6 @@ public class ChallengeResponse {
     private List<Coordinates> shortestPath;
 
     private String theme;
+
+    private LocalDateTime createdAt;
 }

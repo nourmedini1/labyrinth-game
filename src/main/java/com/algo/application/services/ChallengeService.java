@@ -19,7 +19,7 @@ public interface ChallengeService {
 
     void declineChallenge(String id);
 
-    ScoreResponse scoreChallenge(GetScoreRequest getScoreRequest);
+    ScoreResponse scoreChallenge(String id , GetScoreRequest getScoreRequest);
 
 
 

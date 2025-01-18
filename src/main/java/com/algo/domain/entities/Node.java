@@ -29,7 +29,7 @@ public class Node extends PanacheMongoEntityBase implements Serializable {
     private char value;
 
     @BsonProperty("neighbors")
-    private List<Coordinates> neighbors;
+    private List<Node> neighbors;
 
 
 

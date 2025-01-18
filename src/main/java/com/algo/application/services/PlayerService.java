@@ -12,7 +12,9 @@ public interface PlayerService {
 
     PlayerResponse getPlayer(String id);
 
-    PlayerResponse updatePlayer(UpdatePlayerRequest updatePlayerRequest);
+    PlayerResponse getPlayerByName(String name);
+
+    PlayerResponse updatePlayer(String playerId, UpdatePlayerRequest updatePlayerRequest);
 
     void deletePlayer(String id);
 

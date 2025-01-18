@@ -2,6 +2,7 @@ package com.algo.application.models;
 
 
 import com.algo.domain.common.Coordinates;
+import com.algo.domain.common.annotations.ValidObjectId;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class GetScoreRequest {
 
     @Schema(description = "The id of the player", required = true)
+    @ValidObjectId
     private String playerId;
 
     @Schema(description = "Indicates whether the client is the challenger or not", required = true)
@@ -27,7 +29,6 @@ public class GetScoreRequest {
     @Min(0)
     @Max(5)
     private int numberOfRetries;
-
 
     @Schema(description = "The path found by the player", required = true)
     private List<Coordinates> foundPath;
