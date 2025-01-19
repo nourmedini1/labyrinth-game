@@ -8,7 +8,6 @@ import com.algo.domain.common.DifficultyLevel;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -51,12 +50,32 @@ public class LabyrinthServiceImpl implements LabyrinthService {
             List<Node> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
                 Coordinates coordinates = new Coordinates(i, j);
-                Node node = new Node(coordinates, true, '█', new ArrayList<>());
+                List<Coordinates> neighbours = findNeighbours(coordinates,height,width);
+                Node node = new Node(coordinates, true, '█', neighbours);
                 row.add(node);
             }
             nodes.add(row);
         }
         return nodes;
+    }
+    private List<Coordinates> findNeighbours(Coordinates coordinates, int height, int width) {
+        List<Coordinates> neighbours = new ArrayList<>();
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+
+        if (x + 1 < height) {
+            neighbours.add(new Coordinates(x + 1, y));
+        }
+        if (x - 1 >= 0) {
+            neighbours.add(new Coordinates(x - 1, y));
+        }
+        if (y + 1 < width) {
+            neighbours.add(new Coordinates(x, y + 1));
+        }
+        if (y - 1 >= 0) {
+            neighbours.add(new Coordinates(x, y - 1));
+        }
+        return neighbours;
     }
 
     private Coordinates generateMaze(List<List<Node>> nodes, int height, int width) {
