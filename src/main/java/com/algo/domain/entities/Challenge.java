@@ -39,12 +39,12 @@ public class Challenge extends PanacheMongoEntityBase implements Serializable {
     @BsonProperty("challenger_score")
     @Min(0)
     @Schema(description = "The score of the challenger", required = true, defaultValue = "0")
-    private int ChallengerScore;
+    private int challengerScore;
 
     @BsonProperty("challenged_score")
     @Min(0)
     @Schema(description = "The score of the challenged", required = true, defaultValue = "0")
-    private int ChallengedScore;
+    private int challengedScore;
 
     @BsonProperty("status")
     @Schema(description = "The status of the challenge", required = true)

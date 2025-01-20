@@ -118,11 +118,8 @@ public class LabyrinthServiceImpl implements LabyrinthService {
 
     if (path.get(0).equals(start)) {
         return path;
-    } else {
-        throw new Exception("Dijkstra's algorithm couldn't converge");
     }
-
-
+    throw new Exception("Dijkstra's algorithm couldn't converge");
     }
 
     private List<List<Node>> initializeLabyrinth(int height, int width) {

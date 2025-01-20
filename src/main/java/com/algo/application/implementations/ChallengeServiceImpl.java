@@ -35,7 +35,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         Challenge challenge = ChallengeMapper.INSTANCE.createChallengeRequestToChallenge(createChallengeRequest);
         Labyrinth labyrinth = labyrinthService.createLabyrinth(String.valueOf(challenge.getTheme()), challenge.getDifficultyLevel());
         labyrinthService.persistLabyrinth(labyrinth);
-        challenge.setLabyrinthId(labyrinth.getId().toString());
+        challenge.setLabyrinthId(labyrinth.getId().toHexString());
         challengeRepository.createChallenge(challenge);
         return ChallengeMapper.INSTANCE.challengeToChallengeResponse(challenge);
     }

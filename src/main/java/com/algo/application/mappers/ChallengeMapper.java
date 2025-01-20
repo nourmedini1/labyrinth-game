@@ -10,9 +10,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
-import java.time.LocalDateTime;
 import org.bson.types.ObjectId;
-import  com.algo.domain.common.ChallengeStatus;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "cdi", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ChallengeMapper {
@@ -29,8 +28,15 @@ public interface ChallengeMapper {
     @Mapping(target = "id", expression = "java(new ObjectId())")
     Challenge createChallengeRequestToChallenge(CreateChallengeRequest createChallengeRequest);
 
+    @Mapping(source = "id", target = "id", qualifiedByName = "mapObjectIdToString")
 
+    @Named("mapObjectIdToString")
+    default String mapObjectIdToString(ObjectId objectId) {
+        return objectId != null ? objectId.toHexString() : null;
+    }
+    @Mapping(source = "id", target = "id", qualifiedByName = "mapObjectIdToString")
     ChallengeResponse challengeToChallengeResponse(Challenge challenge);
 
+    @Mapping(target = "of", ignore = true)
     PagedEntity<ChallengeResponse> pagedEntityChallengeToPagedEntityChallengeResponse(PagedEntity<Challenge> pagedEntity);
 }

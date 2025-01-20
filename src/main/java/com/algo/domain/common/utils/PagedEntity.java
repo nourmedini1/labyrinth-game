@@ -1,6 +1,5 @@
 package com.algo.domain.common.utils;
 
-import com.algo.domain.entities.Challenge;
 import io.quarkus.mongodb.panache.PanacheQuery;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

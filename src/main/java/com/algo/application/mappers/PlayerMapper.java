@@ -20,5 +20,10 @@ public interface PlayerMapper {
 
     PlayerResponse playerToPlayerResponse(Player player);
 
+    default String map(ObjectId value) {
+        return value != null ? value.toHexString() : null;
+    }
+
+    @Mapping(target = "of", ignore =true)
     PagedEntity<PlayerResponse> pagedEntityPlayerToPagedEntityPlayerResponse(PagedEntity<Player> pagedEntity);
 }
