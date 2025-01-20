@@ -1,0 +1,10 @@
+Palette
+Portrait
+Sculpture
+Mural
+Realism
+Abstract
+Texture
+Composition
+Pattern
+Contrast
