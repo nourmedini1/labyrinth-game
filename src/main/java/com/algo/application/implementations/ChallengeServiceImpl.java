@@ -6,9 +6,11 @@ import com.algo.application.models.CreateChallengeRequest;
 import com.algo.application.models.GetScoreRequest;
 import com.algo.application.models.ScoreResponse;
 import com.algo.application.services.ChallengeService;
+import com.algo.application.services.LabyrinthService;
 import com.algo.domain.common.ChallengeStatus;
 import com.algo.domain.common.utils.PagedEntity;
 import com.algo.domain.entities.Challenge;
+import com.algo.domain.entities.Labyrinth;
 import com.algo.domain.repositories.ChallengeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,9 +26,18 @@ import java.util.Optional;
 public class ChallengeServiceImpl implements ChallengeService {
     @Inject
     ChallengeRepository challengeRepository;
+
+    @Inject
+    LabyrinthService labyrinthService;
+
     @Override
     public ChallengeResponse createChallenge(CreateChallengeRequest createChallengeRequest) {
-        return null;
+        Challenge challenge = ChallengeMapper.INSTANCE.createChallengeRequestToChallenge(createChallengeRequest);
+        Labyrinth labyrinth = labyrinthService.createLabyrinth(String.valueOf(challenge.getTheme()), challenge.getDifficultyLevel());
+        labyrinthService.persistLabyrinth(labyrinth);
+        challenge.setLabyrinthId(labyrinth.getId().toString());
+        challengeRepository.createChallenge(challenge);
+        return ChallengeMapper.INSTANCE.challengeToChallengeResponse(challenge);
     }
 
     @Override
@@ -37,6 +48,8 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public void deleteChallenge(String id) {
+        Challenge challenge = verifyChallengeExists(challengeRepository.findByIdOptional(new ObjectId(id)));
+        labyrinthService.deleteLabyrinth(challenge.getLabyrinthId());
         challengeRepository.deleteChallenge(new ObjectId(id));
     }
 
@@ -65,6 +78,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public ScoreResponse scoreChallenge(String id, GetScoreRequest getScoreRequest) {
         return null;
+        //TODO : Implement scoring logic
     }
 
     private Challenge verifyChallengeExists(Optional<Challenge> optionalChallenge) {

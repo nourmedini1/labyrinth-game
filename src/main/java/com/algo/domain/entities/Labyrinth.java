@@ -38,4 +38,6 @@ public class Labyrinth extends PanacheMongoEntityBase implements Serializable {
     @BsonProperty("height")
     private int height;
 
+    private List<Coordinates> shortestPath;
+
 }

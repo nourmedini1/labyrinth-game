@@ -1,6 +1,6 @@
 package com.algo.domain.repositories;
 
-import com.algo.domain.common.ChallengeStatus;
+
 import com.algo.domain.common.Theme;
 import com.algo.domain.common.utils.PagedEntity;
 import com.algo.domain.entities.Challenge;

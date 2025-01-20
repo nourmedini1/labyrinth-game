@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class ObjectIdValidator implements ConstraintValidator<ValidObjectId, String> {
     private static final String OBJECT_ID_REGEX = "^[0-9a-fA-F]{24}$";
-    private static final Pattern OBJECT_ID_PATTERN = Pattern.compile("^[0-9a-fA-F]{24}$");
+    private static final Pattern OBJECT_ID_PATTERN = Pattern.compile(OBJECT_ID_REGEX);
 
     public ObjectIdValidator() {
     }

@@ -1,7 +1,7 @@
 package com.algo.domain.entities;
 
 import com.algo.domain.common.ChallengeStatus;
-import com.algo.domain.common.Coordinates;
+
 import com.algo.domain.common.Theme;
 import com.algo.domain.common.annotations.ValidObjectId;
 import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
@@ -15,7 +15,7 @@ import org.bson.types.ObjectId;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @MongoEntity(collection = "challenges")
 @Getter
@@ -57,11 +57,8 @@ public class Challenge extends PanacheMongoEntityBase implements Serializable {
 
     @BsonProperty("initial_labyrinth")
     @Schema(description = "The initial labyrinth of the challenge", required = true)
-    private Labyrinth initialLabyrinth;
-
-    @BsonProperty("shortest_path")
-    @Schema(description = "The shortest path of the challenge", required = true)
-    private List<Coordinates> shortestPath;
+    @ValidObjectId
+    private String labyrinthId;
 
     @BsonProperty("difficulty_level")
     @Min(1)

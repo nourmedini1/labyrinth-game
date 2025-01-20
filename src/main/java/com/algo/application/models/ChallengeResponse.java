@@ -1,12 +1,9 @@
 package com.algo.application.models;
 
-import com.algo.domain.common.Coordinates;
-import com.algo.domain.entities.Labyrinth;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,11 +14,9 @@ import java.util.List;
 public class ChallengeResponse {
     private String id;
 
-    private Labyrinth initialLabyrinth;
+    private String labyrinthId;
 
     private int difficultyLevel;
-
-    private List<Coordinates> shortestPath;
 
     private String theme;
 

@@ -10,6 +10,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import java.time.LocalDateTime;
+import org.bson.types.ObjectId;
+import  com.algo.domain.common.ChallengeStatus;
 
 @Mapper(componentModel = "cdi", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ChallengeMapper {
@@ -20,9 +23,10 @@ public interface ChallengeMapper {
     @Mapping(target = "challengerScore", constant = "0")
     @Mapping(target = "challengedScore", constant = "0")
     @Mapping(target = "status", expression = "java(com.algo.domain.common.ChallengeStatus.PENDING)")
-    @Mapping(target = "initialLabyrinth", expression = "java(null)")
+    @Mapping(target = "labyrinthId", expression = "java(null)")
     @Mapping(target = "winnerId", expression = "java(null)")
     @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "id", expression = "java(new ObjectId())")
     Challenge createChallengeRequestToChallenge(CreateChallengeRequest createChallengeRequest);
 
 
