@@ -31,7 +31,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     LabyrinthService labyrinthService;
 
     @Override
-    public ChallengeResponse createChallenge(CreateChallengeRequest createChallengeRequest) {
+    public ChallengeResponse createChallenge(CreateChallengeRequest createChallengeRequest) throws Exception {
         Challenge challenge = ChallengeMapper.INSTANCE.createChallengeRequestToChallenge(createChallengeRequest);
         Labyrinth labyrinth = labyrinthService.createLabyrinth(String.valueOf(challenge.getTheme()), challenge.getDifficultyLevel());
         labyrinthService.persistLabyrinth(labyrinth);

@@ -4,11 +4,11 @@ import com.algo.domain.common.utils.PagedEntity;
 import com.algo.domain.entities.Player;
 import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
-import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;

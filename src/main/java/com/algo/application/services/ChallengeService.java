@@ -9,7 +9,7 @@ import com.algo.domain.common.utils.PagedEntity;
 
 public interface ChallengeService {
 
-    ChallengeResponse createChallenge(CreateChallengeRequest createChallengeRequest);
+    ChallengeResponse createChallenge(CreateChallengeRequest createChallengeRequest) throws Exception;
 
     PagedEntity<ChallengeResponse> getChallenges(int page, int size, String challengerId, String challengedId, String status, int difficultyLevel, String winnerId, String theme);
 

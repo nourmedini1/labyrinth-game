@@ -3,11 +3,11 @@ package com.algo.domain.repositories;
 import com.algo.domain.entities.Labyrinth;
 import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
-import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+
 import org.eclipse.microprofile.faulttolerance.Timeout;
 
 @ApplicationScoped

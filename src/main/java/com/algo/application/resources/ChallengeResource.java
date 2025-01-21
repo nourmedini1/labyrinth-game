@@ -28,7 +28,13 @@ public class ChallengeResource {
     @POST
     @Path("/create")
     public Response createChallenge(CreateChallengeRequest createChallengeRequest) {
-        ChallengeResponse challengeResponse = challengeService.createChallenge(createChallengeRequest);
+        ChallengeResponse challengeResponse;
+        try {
+            challengeResponse = challengeService.createChallenge(createChallengeRequest);
+        } catch (Exception e) {
+            log.error("Error creating challenge", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
         return Response.ok(challengeResponse).status(Response.Status.CREATED).build();
     }
 
