@@ -1,0 +1,10 @@
+Pop
+Classical
+Folk
+Instrument
+Guitar
+Piano
+Drums
+Violin
+Flute
+Saxophone

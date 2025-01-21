@@ -1,0 +1,10 @@
+Novel
+Poetry
+Drama
+Prose
+Fiction
+Nonfiction
+Epic
+Sonnet
+Lyric
+Haiku

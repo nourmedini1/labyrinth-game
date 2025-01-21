@@ -1,0 +1,10 @@
+Democracy
+Republic
+Monarchy
+Dictatorship
+Communism
+Socialism
+Capitalism
+Constitution
+Parliament
+Congress

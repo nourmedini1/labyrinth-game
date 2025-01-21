@@ -1,0 +1,10 @@
+Empire
+Revolution
+Dynasty
+Civilization
+War
+Treaty
+Colony
+Monarch
+Democracy
+Feudalism

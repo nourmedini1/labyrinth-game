@@ -1,0 +1,10 @@
+Director
+Producer
+Actor
+Screenplay
+Script
+Scene
+Cinematography
+Editing
+Soundtrack
+Special Effects

@@ -1,0 +1,10 @@
+Continent
+Ocean
+Mountain
+River
+Lake
+Desert
+Glacier
+Island
+Volcano
+Plateau

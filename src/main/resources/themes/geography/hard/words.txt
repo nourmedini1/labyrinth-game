@@ -1,0 +1,10 @@
+Peninsula
+Archipelago
+Reef
+Geyser
+Plain
+Hemisphere
+Longitude
+Latitude
+Equator
+Tropics
