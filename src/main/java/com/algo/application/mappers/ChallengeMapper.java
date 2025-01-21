@@ -12,6 +12,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 import org.bson.types.ObjectId;
 import org.mapstruct.Named;
+import org.bson.types.ObjectId;
+import java.time.LocalDateTime;
 
 @Mapper(componentModel = "cdi", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ChallengeMapper {
@@ -24,8 +26,8 @@ public interface ChallengeMapper {
     @Mapping(target = "status", expression = "java(com.algo.domain.common.ChallengeStatus.PENDING)")
     @Mapping(target = "labyrinthId", expression = "java(null)")
     @Mapping(target = "winnerId", expression = "java(null)")
-    @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "id", expression = "java(new ObjectId())")
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "id", expression = "java(new org.bson.types.ObjectId())")
     Challenge createChallengeRequestToChallenge(CreateChallengeRequest createChallengeRequest);
 
     @Mapping(source = "id", target = "id", qualifiedByName = "mapObjectIdToString")

@@ -32,6 +32,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerResponse getPlayer(String id) {
+        log.info("Getting player with id: {}", id);
         Optional<Player> optionalPlayer = playerRepository.findByIdOptional(new ObjectId(id));
         Player player = verifyPlayerExists(optionalPlayer);
         return PlayerMapper.INSTANCE.playerToPlayerResponse(player);
@@ -68,6 +69,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PagedEntity<PlayerResponse> getPlayersSortedByScore(int page, int size) {
         PagedEntity<Player> pagedEntity = playerRepository.search(page, size);
+        log.info("Getting players sorted by score : {}", pagedEntity.getEntities().size());
         return PlayerMapper.INSTANCE.pagedEntityPlayerToPagedEntityPlayerResponse(pagedEntity);
     }
 

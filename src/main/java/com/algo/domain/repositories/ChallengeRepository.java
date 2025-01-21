@@ -21,10 +21,10 @@ import org.eclipse.microprofile.faulttolerance.Timeout;
 import java.util.ArrayList;
 import java.util.List;
 @ApplicationScoped
-@Transactional
+//@Transactional
 @Slf4j
 @Bulkhead
-@CircuitBreaker
+//@CircuitBreaker
 @Timeout
 public class ChallengeRepository implements PanacheMongoRepositoryBase<Challenge, ObjectId> {
 

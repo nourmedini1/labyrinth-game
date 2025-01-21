@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Schema(name = "Player", description = "A player in the game")
-public class Player extends PanacheMongoEntityBase implements Serializable {
+public class Player extends PanacheMongoEntityBase {
     @BsonId
     private ObjectId id;
 

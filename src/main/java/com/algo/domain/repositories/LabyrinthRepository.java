@@ -11,10 +11,10 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 
 @ApplicationScoped
-@Transactional
+//@Transactional
 @Slf4j
 @Bulkhead
-@CircuitBreaker
+//@CircuitBreaker
 @Timeout
 public class LabyrinthRepository implements PanacheMongoRepositoryBase<Labyrinth, ObjectId> {
 

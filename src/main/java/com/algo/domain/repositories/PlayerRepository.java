@@ -16,10 +16,10 @@ import io.quarkus.panache.common.Sort;
 import java.util.Optional;
 
 @ApplicationScoped
-@Transactional
+//@Transactional
 @Slf4j
 @Bulkhead
-@CircuitBreaker
+//@CircuitBreaker
 @Timeout
 public class PlayerRepository implements PanacheMongoRepositoryBase<Player, ObjectId> {
 

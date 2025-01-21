@@ -37,15 +37,18 @@ public class LabyrinthServiceImpl implements LabyrinthService {
                 if (node.isWall()) {
                     continue;
                 }
-                List<Node> neighbors = getNeighbors(node.getCoordinates(), nodes, height, width);
+                List<Coordinates> neighbors = getNeighbors(node.getCoordinates(), nodes, height, width);
                 node.setNeighbors(neighbors);
             }
         }
+        log.info("Generating labyrinth with start: {} and end: {}, with nodes {}", start, end, nodes);
         List<Coordinates> shortestPath = new LinkedList<>();
         try {
-            shortestPath = getShortestPath(start, end, nodes);
+            Node startNode = nodes.get(start.getX()).get(start.getY());
+            Node endNode = nodes.get(end.getX()).get(end.getY());
+            shortestPath = getShortestPath(startNode, endNode, nodes);
         } catch (Exception e) {
-            log.error("Dijkstra's algorithm couldn't converge ", e);
+            log.error("Error generating shortest path for labyrinth", e);
         }
         return Labyrinth.builder()
                 .id(new ObjectId())
@@ -70,56 +73,44 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         labyrinthRepository.deleteLabyrinth(new ObjectId(id));
     }
 
-    private List<Coordinates> getShortestPath(Coordinates start, Coordinates end, List<List<Node>> nodes) throws Exception {
-       Map<Coordinates, Integer> distances = new HashMap<>();
-    Map<Coordinates, Coordinates> previous = new HashMap<>();
-    PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(node -> distances.getOrDefault(node.getCoordinates(), Integer.MAX_VALUE)));
-    Set<Coordinates> visited = new HashSet<>();
+    private List<Coordinates> getShortestPath(Node start, Node end, List<List<Node>> nodes) throws Exception {
 
-    for (List<Node> row : nodes) {
-        for (Node node : row) {
-            distances.put(node.getCoordinates(), Integer.MAX_VALUE);
-        }
-    }
-    distances.put(start, 0);
-    queue.add(new Node(start, true, ' ', new LinkedList<>()));
+        Map<Coordinates, Coordinates> prev = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+        Set<Coordinates> visited = new HashSet<>();
+        queue.add(start);
+        visited.add(start.getCoordinates());
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
 
-    while (!queue.isEmpty()) {
-        Node current = queue.poll();
-        Coordinates currentCoord = current.getCoordinates();
-
-        if (visited.contains(currentCoord)) {
-            continue;
-        }
-        visited.add(currentCoord);
-
-        if (currentCoord.equals(end)) {
-            break;
-        }
-
-        for (Node neighbor : current.getNeighbors()) {
-            if (neighbor.isWall() || visited.contains(neighbor.getCoordinates())) {
-                continue;
+            if (current.getCoordinates().equals(end.getCoordinates())) {
+                return reconstructPath(prev, start.getCoordinates(), end.getCoordinates());
             }
 
-            int newDist = distances.get(currentCoord) + 1;
-            if (newDist < distances.get(neighbor.getCoordinates())) {
-                distances.put(neighbor.getCoordinates(), newDist);
-                previous.put(neighbor.getCoordinates(), currentCoord);
+            for (Coordinates neighborCoords : current.getNeighbors()) {
+                Node neighbor = nodes.get(neighborCoords.getX()).get(neighborCoords.getY());
+                if (neighbor.isWall() || visited.contains(neighborCoords)) continue;
+
+                visited.add(neighbor.getCoordinates());
                 queue.add(neighbor);
+                prev.put(neighbor.getCoordinates(), current.getCoordinates());
             }
         }
+
+        throw new Exception("No path found");
+
     }
 
-    List<Coordinates> path = new LinkedList<>();
-    for (Coordinates at = end; at != null; at = previous.get(at)) {
-        path.add(0, at);
-    }
+    private LinkedList<Coordinates> reconstructPath(Map<Coordinates, Coordinates> prev, Coordinates start, Coordinates end) {
+        LinkedList<Coordinates> path = new LinkedList<>();
+        for (Coordinates at = end; at != null; at = prev.get(at)) {
+            path.addFirst(at);
+        }
+        if (!path.isEmpty() && !path.getFirst().equals(start)) {
+            return new LinkedList<>();
+        }
 
-    if (path.get(0).equals(start)) {
         return path;
-    }
-    throw new Exception("Dijkstra's algorithm couldn't converge");
     }
 
     private List<List<Node>> initializeLabyrinth(int height, int width) {
@@ -141,8 +132,9 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         int startX = random.nextInt(height);
         int startY = width - 1;
 
-        nodes.get(startX).get(startY).setWall(false);
-        nodes.get(startX).get(startY).setValue('E');
+        Node startNode = nodes.get(startX).get(startY);
+        startNode.setWall(false);
+        startNode.setValue('E');
 
         List<int[]> frontier = new ArrayList<>();
         frontier.add(new int[]{startX, startY});
@@ -164,11 +156,13 @@ public class LabyrinthServiceImpl implements LabyrinthService {
                 int my = y + dir[1] / 2;
 
                 if (isValidNodePlacement(nx, ny, height, width) && !visited[nx][ny]) {
-                    nodes.get(mx).get(my).setWall(false);
-                    nodes.get(mx).get(my).setValue(' ');
+                    Node mNode = nodes.get(mx).get(my);
+                    mNode.setWall(false);
+                    mNode.setValue(' ');
 
-                    nodes.get(nx).get(ny).setWall(false);
-                    nodes.get(nx).get(ny).setValue(' ');
+                    Node nNode = nodes.get(nx).get(ny);
+                    nNode.setWall(false);
+                    nNode.setValue(' ');
 
                     visited[nx][ny] = true;
                     frontier.add(new int[]{nx, ny});
@@ -183,8 +177,9 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         int endX = random.nextInt(height);
         int endY = random.nextBoolean() ? 0 : random.nextInt(width);
 
-        nodes.get(endX).get(endY).setWall(false);
-        nodes.get(endX).get(endY).setValue('S');
+        Node endNode = nodes.get(endX).get(endY);
+        endNode.setWall(false);
+        endNode.setValue('S');
 
         return new Coordinates(endX, endY);
     }
@@ -202,14 +197,14 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         }
     }
 
-    private List<Node> getNeighbors(Coordinates coordinates, List<List<Node>> nodes, int height, int width) {
-        List<Node> neighbors = new LinkedList<>();
+    private List<Coordinates> getNeighbors(Coordinates coordinates, List<List<Node>> nodes, int height, int width) {
+        List<Coordinates> neighbors = new LinkedList<>();
         int[][] directions = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
         for (int[] dir : directions) {
             int nx = coordinates.getX() + dir[0];
             int ny = coordinates.getY() + dir[1];
             if (isValidNodePlacement(nx, ny, height, width) && !nodes.get(nx).get(ny).isWall()) {
-                neighbors.add(nodes.get(nx).get(ny));
+                neighbors.add(nodes.get(nx).get(ny).getCoordinates());
             }
         }
         return neighbors;

@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @MongoEntity(collection = "labyrinths")
 @Schema(name = "Labyrinth", description = "A labyrinth related to a specific challenge")
-public class Labyrinth extends PanacheMongoEntityBase implements Serializable {
+public class Labyrinth extends PanacheMongoEntityBase {
     @BsonId
     private ObjectId id;
 

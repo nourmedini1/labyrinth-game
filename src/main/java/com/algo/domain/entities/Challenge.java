@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Schema(name = "Challenge", description = "A challenge between two players")
-public class Challenge extends PanacheMongoEntityBase implements Serializable {
+public class Challenge extends PanacheMongoEntityBase {
     @BsonId
     private ObjectId id;
 
