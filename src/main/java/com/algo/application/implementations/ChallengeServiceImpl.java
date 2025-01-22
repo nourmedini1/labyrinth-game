@@ -1,10 +1,8 @@
 package com.algo.application.implementations;
 
 import com.algo.application.mappers.ChallengeMapper;
-import com.algo.application.models.ChallengeResponse;
-import com.algo.application.models.CreateChallengeRequest;
-import com.algo.application.models.GetScoreRequest;
-import com.algo.application.models.ScoreResponse;
+import com.algo.application.models.*;
+
 import com.algo.application.services.ChallengeService;
 import com.algo.application.services.LabyrinthService;
 import com.algo.domain.common.ChallengeStatus;
@@ -76,9 +74,31 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public ScoreResponse scoreChallenge(String id, GetScoreRequest getScoreRequest) {
-        return null;
-        //TODO : Implement scoring logic
+    public UpdateChallengeResponse updateChallenge(String id, UpdateChallengeRequest updateChallengeRequest) {
+        Optional<Challenge> optionalChallenge = challengeRepository.findByIdOptional(new ObjectId(id));
+        Challenge challenge = verifyChallengeExists(optionalChallenge);
+        UpdateChallengeResponse updateChallengeResponse = new UpdateChallengeResponse();
+        if (updateChallengeRequest.getChallengerScore() != null) {
+            challenge.setChallengerScore(Integer.parseInt(updateChallengeRequest.getChallengerScore()));
+        }
+        if (updateChallengeRequest.getChallengedScore() != null) {
+            challenge.setChallengedScore(Integer.parseInt(updateChallengeRequest.getChallengedScore()));
+        }
+        boolean thereIsWinner = challenge.getChallengerScore() != 0 && challenge.getChallengedScore() != 0;
+        if (thereIsWinner) {
+            boolean challengerIsWinner = challenge.getChallengerScore() > challenge.getChallengedScore();
+            if (challengerIsWinner) {
+                challenge.setWinnerId(challenge.getChallengerId());
+            } else {
+                challenge.setWinnerId(challenge.getChallengedId());
+            }
+            updateChallengeResponse.setMessage("The winner is : " + challenge.getWinnerId());
+            challenge.setStatus(ChallengeStatus.FINISHED);
+        } else {
+            updateChallengeResponse.setMessage("Waiting for the other player to finish the challenge");
+        }
+        challengeRepository.updateChallenge(challenge);
+        return updateChallengeResponse;
     }
 
     private Challenge verifyChallengeExists(Optional<Challenge> optionalChallenge) {

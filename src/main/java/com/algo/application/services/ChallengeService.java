@@ -1,9 +1,6 @@
 package com.algo.application.services;
 
-import com.algo.application.models.ChallengeResponse;
-import com.algo.application.models.CreateChallengeRequest;
-import com.algo.application.models.GetScoreRequest;
-import com.algo.application.models.ScoreResponse;
+import com.algo.application.models.*;
 import com.algo.domain.common.utils.PagedEntity;
 
 
@@ -19,7 +16,7 @@ public interface ChallengeService {
 
     void declineChallenge(String id);
 
-    ScoreResponse scoreChallenge(String id , GetScoreRequest getScoreRequest);
+    UpdateChallengeResponse updateChallenge(String id , UpdateChallengeRequest updateChallengeRequest);
 
 
 

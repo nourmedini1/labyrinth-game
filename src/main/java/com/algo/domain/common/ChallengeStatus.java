@@ -10,7 +10,8 @@ public enum ChallengeStatus {
     ACCEPTED("ACCEPTED"),
     DECLINED("DECLINED"),
     PENDING("PENDING"),
-    EXPIRED("EXPIRED");
+    EXPIRED("EXPIRED"),
+    FINISHED("FINISHED");
 
 
 

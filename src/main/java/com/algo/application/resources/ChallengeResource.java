@@ -1,10 +1,7 @@
 package com.algo.application.resources;
 
 
-import com.algo.application.models.ChallengeResponse;
-import com.algo.application.models.CreateChallengeRequest;
-import com.algo.application.models.GetScoreRequest;
-import com.algo.application.models.ScoreResponse;
+import com.algo.application.models.*;
 import com.algo.application.services.ChallengeService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -59,24 +56,25 @@ public class ChallengeResource {
     }
 
     @PATCH
-    @Path("/accept/{id}")
+    @Path("/{id}/accept")
     public Response acceptChallenge(@PathParam("id") String id) {
         ChallengeResponse challengeResponse = challengeService.acceptChallenge(id);
         return Response.ok(challengeResponse).status(Response.Status.OK).build();
     }
 
     @PATCH
-    @Path("/decline/{id}")
+    @Path("/{id}/decline")
     public Response declineChallenge(@PathParam("id") String id) {
         challengeService.declineChallenge(id);
         return Response.status(Response.Status.OK).build();
     }
 
-    @POST
-    @Path("{id}/score")
-    public Response scoreChallenge(@PathParam("id") String id , GetScoreRequest getScoreRequest) {
-        ScoreResponse scoreResponse = challengeService.scoreChallenge(id,getScoreRequest);
-        return Response.ok(scoreResponse).status(Response.Status.OK).build();
+    @PUT
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Path("{id}/update")
+    public Response updateChallenge(@PathParam("id") String id , UpdateChallengeRequest getScoreRequest) {
+        UpdateChallengeResponse response = challengeService.updateChallenge(id,getScoreRequest);
+        return Response.ok(response).build();
     }
 
 

@@ -8,11 +8,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @Builder
 @Getter
 @Setter
-@Schema(name = "ScoreResponse", description = "Response to a score request")
-public class ScoreResponse {
-
-    @Schema(description = "The score of the player", required = true)
-    private int score;
+@Schema(name = "UpdateChallengeResponse", description = "Response to a challenge update request")
+public class UpdateChallengeResponse {
 
     @Schema(description = "The message to the player", required = true)
     private String message;
