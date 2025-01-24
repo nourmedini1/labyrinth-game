@@ -34,7 +34,7 @@ public abstract class WordSelector {
         List<String> selectedWords = new ArrayList<>();
         for (int i = 0; i < numberOfWordsSelected; i++) {
             int randomIndex = (int) (Math.random() * words.size());
-            selectedWords.add(words.get(randomIndex));
+            selectedWords.add(words.get(randomIndex).toLowerCase());
             words.remove(randomIndex);
         }
         return selectedWords;
