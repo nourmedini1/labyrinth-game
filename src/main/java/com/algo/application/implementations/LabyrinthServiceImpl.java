@@ -19,6 +19,7 @@ import java.util.*;
 @ApplicationScoped
 @Slf4j
 public class LabyrinthServiceImpl implements LabyrinthService {
+    static int l = 0;
     @Inject
     LabyrinthRepository labyrinthRepository;
 
@@ -43,8 +44,8 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         int width = DifficultyLevel.getWidth(difficultyLevel);
         List<List<Node>> nodes = initializeLabyrinth(height, width);
         Coordinates start = placeLabyrinthEntree(nodes, height);
-        generateLabyrinthStructure(nodes, height, width, start);
         Coordinates end = placeLabyrinthExit(nodes, height, width);
+        generateLabyrinthStructure(nodes, height, width, start, end);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Node currentNode = nodes.get(i).get(j);
@@ -63,6 +64,8 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         }
         List<String> selectedWords = WordSelector.selectWords(theme , difficultyLevel,4);
         placeWordsAlongShortestPath(selectedWords, shortestPath, nodes);
+        List<String> randomWords = WordSelector.selectWords(theme , difficultyLevel,10);
+        placeWordsInLabyrinth(randomWords, nodes, height, width);
         placeRandomLowercaseLetters(nodes, height, width);
         return Labyrinth.builder()
                 .id(new ObjectId())
@@ -124,8 +127,11 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         return nodes;
     }
 
-    private void generateLabyrinthStructure(List<List<Node>> nodes, int height, int width, Coordinates start) {
+    private void generateLabyrinthStructure(List<List<Node>> nodes, int height, int width, Coordinates start, Coordinates exit) {
         Random random = new Random();
+
+        createGuaranteedPath(nodes, start, exit, height, width);
+
         List<int[]> frontier = new ArrayList<>();
         frontier.add(new int[]{start.getX(), start.getY()});
 
@@ -137,6 +143,7 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         while (!frontier.isEmpty()) {
             int[] current = frontier.remove(random.nextInt(frontier.size()));
             int x = current[0], y = current[1];
+
             randomShuffle(directions, random);
 
             for (int[] dir : directions) {
@@ -156,6 +163,47 @@ public class LabyrinthServiceImpl implements LabyrinthService {
 
                     visited[nx][ny] = true;
                     frontier.add(new int[]{nx, ny});
+                }
+            }
+        }
+    }
+
+    private void createGuaranteedPath(List<List<Node>> nodes, Coordinates start, Coordinates exit, int height, int width) {
+        int x = start.getX();
+        int y = start.getY();
+        int endX = exit.getX();
+        int endY = exit.getY();
+
+        while (x != endX || y != endY) {
+            Node node = nodes.get(x).get(y);
+            node.setWall(false);
+            node.setValue(' ');
+
+            if (x == endX) {
+                if (y < endY && y + 1 < width) {
+                    y++;
+                } else if (y > endY && y - 1 >= 0) {
+                    y--;
+                }
+            } else if (y == endY) {
+                if (x < endX && x + 1 < height) {
+                    x++;
+                } else if (x > endX && x - 1 >= 0) {
+                    x--;
+                }
+            } else {
+                if (x < endX && x + 1 < height) {
+                    x++;
+                } else if (x > endX && x - 1 >= 0) {
+                    x--;
+                }
+
+                if (Math.random() > 0.5) {
+                    if (y + 1 < width) {
+                        y++;
+                    } else if (y - 1 >= 0) {
+                        y--;
+                    }
                 }
             }
         }
@@ -229,5 +277,47 @@ public class LabyrinthServiceImpl implements LabyrinthService {
             }
         }
     }
+    private void placeWordsInLabyrinth(List<String> words, List<List<Node>> nodes, int height, int width) throws Exception {
+        Random random = new Random();
+        for (String word : words) {
+            boolean wordPlaced = false;
+            for (int attempts = 0; attempts < 100; attempts++) {
+                int x = random.nextInt(height);
+                int y = random.nextInt(width);
+                if (nodes.get(x).get(y).isWall() || Character.isLetter(nodes.get(x).get(y).getValue())) continue;
+                List<int[]> directions = Arrays.asList(new int[]{0, 1},  new int[]{1, 0},  new int[]{0, -1}, new int[]{-1, 0});
+                Collections.shuffle(directions);
+                for (int[] direction : directions) {
+                    if (canPlaceWord(word, nodes, x, y, direction, height, width)) {
+                        placeWord(word, nodes, x, y, direction);
+                        wordPlaced = true;
+                        break;
+                    }
+                }
+                if (wordPlaced) break;
+            }
+            if (!wordPlaced) throw new Exception("Could not place word in labyrinth");
+        }
+    }
 
+    private boolean canPlaceWord(String word, List<List<Node>> nodes, int x, int y, int[] direction, int height, int width) {
+        int dx = direction[0];
+        int dy = direction[1];
+        for (int i = 0; i < word.length(); i++) {
+            int nx = x + i * dx;
+            int ny = y + i * dy;
+            if (!isValidNodePlacement(nx, ny, height, width) || nodes.get(nx).get(ny).isWall())  return false;
+        }
+        return true;
+    }
+
+    private void placeWord(String word, List<List<Node>> nodes, int x, int y, int[] direction) {
+        int dx = direction[0];
+        int dy = direction[1];
+        for (int i = 0; i < word.length(); i++) {
+            int nx = x + i * dx;
+            int ny = y + i * dy;
+            nodes.get(nx).get(ny).setValue(word.charAt(i));
+        }
+    }
 }
