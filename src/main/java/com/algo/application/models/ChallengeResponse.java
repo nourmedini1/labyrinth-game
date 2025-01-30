@@ -18,6 +18,8 @@ public class ChallengeResponse {
 
     private int difficultyLevel;
 
+    private String challengerId;
+
     private String theme;
 
     private LocalDateTime createdAt;

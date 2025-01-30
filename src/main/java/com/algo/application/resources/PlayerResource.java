@@ -35,12 +35,13 @@ public class PlayerResource {
     @POST
     @Path("/sign-in")
     public Response signIn(LoginRequest loginRequest) {
+        log.info("Sign in request received for player: {}", loginRequest.getName());
         PlayerResponse playerResponse = playerService.getPlayerByName(loginRequest.getName());
         return Response.ok(playerResponse).status(Response.Status.OK).build();
     }
 
     @PUT
-    @Path("/update/{id}")
+    @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response updatePlayer(@PathParam("id") String id, UpdatePlayerRequest updatePlayerRequest) {
         PlayerResponse playerResponse = playerService.updatePlayer(id,updatePlayerRequest);
@@ -55,14 +56,14 @@ public class PlayerResource {
     }
 
     @GET
-    @Path("/name/{name}")
+    @Path("/by-name/{name}")
     public Response getPlayerByName(@PathParam("name") String name) {
         PlayerResponse playerResponse = playerService.getPlayerByName(name);
         return Response.ok(playerResponse).status(Response.Status.OK).build();
     }
 
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/{id}")
     public Response deletePlayer(@PathParam("id") String id) {
         playerService.deletePlayer(id);
         return Response.status(Response.Status.NO_CONTENT).build();

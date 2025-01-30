@@ -5,7 +5,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Setter
 @Schema(name = "UpdateChallengeResponse", description = "Response to a challenge update request")

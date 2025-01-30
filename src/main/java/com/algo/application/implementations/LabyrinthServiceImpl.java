@@ -19,7 +19,6 @@ import java.util.*;
 @ApplicationScoped
 @Slf4j
 public class LabyrinthServiceImpl implements LabyrinthService {
-    static int l = 0;
     @Inject
     LabyrinthRepository labyrinthRepository;
 
@@ -109,7 +108,6 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         if (!path.isEmpty() && !path.getFirst().equals(start)) {
             return new LinkedList<>();
         }
-
         return path;
     }
 
@@ -129,38 +127,28 @@ public class LabyrinthServiceImpl implements LabyrinthService {
 
     private void generateLabyrinthStructure(List<List<Node>> nodes, int height, int width, Coordinates start, Coordinates exit) {
         Random random = new Random();
-
         createGuaranteedPath(nodes, start, exit, height, width);
-
         List<int[]> frontier = new ArrayList<>();
         frontier.add(new int[]{start.getX(), start.getY()});
-
         boolean[][] visited = new boolean[height][width];
         visited[start.getX()][start.getY()] = true;
-
         int[][] directions = {{0, 2}, {2, 0}, {-2, 0}, {0, -2}};
-
         while (!frontier.isEmpty()) {
             int[] current = frontier.remove(random.nextInt(frontier.size()));
             int x = current[0], y = current[1];
-
             randomShuffle(directions, random);
-
             for (int[] dir : directions) {
                 int nx = x + dir[0];
                 int ny = y + dir[1];
                 int mx = x + dir[0] / 2;
                 int my = y + dir[1] / 2;
-
                 if (isValidNodePlacement(nx, ny, height, width) && !visited[nx][ny]) {
                     Node mNode = nodes.get(mx).get(my);
                     mNode.setWall(false);
                     mNode.setValue(' ');
-
                     Node nNode = nodes.get(nx).get(ny);
                     nNode.setWall(false);
                     nNode.setValue(' ');
-
                     visited[nx][ny] = true;
                     frontier.add(new int[]{nx, ny});
                 }
@@ -173,37 +161,28 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         int y = start.getY();
         int endX = exit.getX();
         int endY = exit.getY();
-
         while (x != endX || y != endY) {
             Node node = nodes.get(x).get(y);
             node.setWall(false);
             node.setValue(' ');
-
             if (x == endX) {
-                if (y < endY && y + 1 < width) {
-                    y++;
-                } else if (y > endY && y - 1 >= 0) {
-                    y--;
-                }
+
+                if (y < endY && y + 1 < width) y++;
+                else if (y > endY && y - 1 >= 0) y--;
+
             } else if (y == endY) {
-                if (x < endX && x + 1 < height) {
-                    x++;
-                } else if (x > endX && x - 1 >= 0) {
-                    x--;
-                }
+
+                if (x < endX && x + 1 < height) x++;
+                else if (x > endX && x - 1 >= 0) x--;
+
             } else {
-                if (x < endX && x + 1 < height) {
-                    x++;
-                } else if (x > endX && x - 1 >= 0) {
-                    x--;
-                }
+
+                if (x < endX && x + 1 < height) x++;
+                else if (x > endX && x - 1 >= 0) x--;
 
                 if (Math.random() > 0.5) {
-                    if (y + 1 < width) {
-                        y++;
-                    } else if (y - 1 >= 0) {
-                        y--;
-                    }
+                    if (y + 1 < width) y++;
+                    else if (y - 1 >= 0) y--;
                 }
             }
         }
@@ -255,7 +234,7 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         node.setNeighbors(neighbors);
     }
 
-    private void placeWordsAlongShortestPath(List<String> words, List<Coordinates> shortestPath, List<List<Node>> nodes) throws Exception {
+    private void placeWordsAlongShortestPath(List<String> words, List<Coordinates> shortestPath, List<List<Node>> nodes) {
         int index = 0;
         for (String word : words) {
             for (char c : word.toCharArray()) {

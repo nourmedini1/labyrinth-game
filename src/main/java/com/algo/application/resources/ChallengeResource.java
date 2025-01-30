@@ -71,7 +71,7 @@ public class ChallengeResource {
 
     @PUT
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Path("{id}/update")
+    @Path("/{id}")
     public Response updateChallenge(@PathParam("id") String id , UpdateChallengeRequest getScoreRequest) {
         UpdateChallengeResponse response = challengeService.updateChallenge(id,getScoreRequest);
         return Response.ok(response).build();
