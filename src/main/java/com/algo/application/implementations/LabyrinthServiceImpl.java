@@ -64,6 +64,11 @@ public class LabyrinthServiceImpl implements LabyrinthService {
         List<String> selectedWords = WordSelector.selectWords(theme , difficultyLevel,4);
         placeWordsAlongShortestPath(selectedWords, shortestPath, nodes);
         List<String> randomWords = WordSelector.selectWords(theme , difficultyLevel,10);
+        List<String> allWords = new LinkedList<>();
+        allWords.addAll(selectedWords);
+        allWords.addAll(randomWords);
+
+
         placeWordsInLabyrinth(randomWords, nodes, height, width);
         placeRandomLowercaseLetters(nodes, height, width);
         return Labyrinth.builder()
@@ -73,6 +78,7 @@ public class LabyrinthServiceImpl implements LabyrinthService {
                 .nodes(nodes)
                 .start(start)
                 .end(end)
+                .words(allWords)
                 .shortestPath(shortestPath)
                 .build();
     }
