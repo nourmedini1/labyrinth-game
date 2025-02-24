@@ -23,4 +23,6 @@ public class ChallengeResponse {
     private String theme;
 
     private LocalDateTime createdAt;
+
+
 }

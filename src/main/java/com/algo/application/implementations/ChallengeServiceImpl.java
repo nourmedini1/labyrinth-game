@@ -70,6 +70,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         if (!challenge.getStatus().equals(ChallengeStatus.PENDING)) {
             throw new BadRequestException("Challenge is not pending");
         }
+        challenge.setStatus(ChallengeStatus.DECLINED);
         challengeRepository.updateChallenge(challenge);
     }
 
