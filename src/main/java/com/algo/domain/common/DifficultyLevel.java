@@ -8,14 +8,14 @@ public abstract class DifficultyLevel {
 
 
 
-    public static final int EASY_WIDTH = 10;
-    public static final int EASY_HEIGHT = 20;
+    public static final int EASY_WIDTH = 20;
+    public static final int EASY_HEIGHT = 10;
 
-    public static final int MEDIUM_WIDTH = 20;
-    public static final int MEDIUM_HEIGHT = 40;
+    public static final int MEDIUM_WIDTH = 40;
+    public static final int MEDIUM_HEIGHT = 20;
 
-    public static final int HARD_WIDTH = 40;
-    public static final int HARD_HEIGHT = 60;
+    public static final int HARD_WIDTH = 50;
+    public static final int HARD_HEIGHT = 40;
 
 
     public static final int EASY_OBSTACLES = 10;

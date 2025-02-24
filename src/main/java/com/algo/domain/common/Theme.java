@@ -17,7 +17,8 @@ public enum Theme {
     TECHNOLOGY("TECHNOLOGY"),
     NATURE("NATURE"),
     FOOD("FOOD"),
-    MYTHOLOGY("MYTHOLOGY");
+    MYTHOLOGY("MYTHOLOGY"),
+    LITERATURE("LITERATURE");
 
 
 

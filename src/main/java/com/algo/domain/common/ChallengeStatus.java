@@ -28,6 +28,7 @@ public enum ChallengeStatus {
     }
 
 
+
     @JsonCreator
     public static ChallengeStatus forValue(String value) {
         return Arrays.stream(ChallengeStatus.values())
