@@ -37,6 +37,8 @@ public class Labyrinth extends PanacheMongoEntityBase {
 
     @BsonProperty("height")
     private int height;
+    @BsonProperty("words")
+    private List<String> words;
 
     private List<Coordinates> shortestPath;
 
